@@ -99,35 +99,28 @@ public class TicTacToe {
     }
 
     private boolean isDiagonalWinning(Shape shape, Position position) {
-        if (!isPositionAtDiagonal(position))
-            return false;
         final int size = grid.getSize();
         final Shape[][] grid = this.grid.getGrid();
+        boolean negativeSlope = true;
+        boolean positiveSlope = true;
 
-        if (position.getRow().equals(position.getCol())) {
-            //Check negative slope diagonal
-            for (int i = 0; i < size; i++) {
-                if (!grid[i][i].equals(shape))
-                    return false;
+        //Check negative slope diagonal
+        for (int i = 0; i < size; i++) {
+            if (!grid[i][i].equals(shape)) {
+                negativeSlope = false;
+                break;
             }
-        } else {
-            //Check positive slope diagonal
-            for (int i=size - 1; i >=0; i--) {
-                for (int j=0; j < size; j++) {
-                    if (!grid[i][j].equals(shape))
-                        return false;
+
+        }
+
+        //Check positive slope diagonal
+        for (int i=0; i < size; i++) {
+                if (!grid[i][size - i - 1].equals(shape)) {
+                    positiveSlope = false;
+                    break;
                 }
             }
-        }
-        return true;
-    }
-
-    private boolean isPositionAtDiagonal(Position position) {
-        final int size = this.grid.getSize();
-        final int row = position.getRow();
-        final int col = position.getCol();
-
-        return row == col || (row == 0 && col == size - 1) || (row == size - 1 && col == size - 1);
+        return (positiveSlope || negativeSlope);
     }
 
     private boolean isRowWinning(Shape shape, Position position) {
